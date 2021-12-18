@@ -133,16 +133,29 @@ char	**ft_split(char const *s, char c)
 	array[i] = NULL;
 	return (array);
 }
-// int main()
-// {
-// 	char const *s = "lorem l mi";
-// 	char	c = ' ';
-// 	int i = 0;
-// 	char **array = ft_split(s, c);
 
-// 	while(array[i])
-// 	{
-// 		printf("%s\n", array[i]);
-// 		i++;
-// 	}
-// }
+
+char    *search(char **path, char *cmd)
+{
+    int     i;
+    char    **paths;
+    char    *x;
+	char	*file;
+
+    i = 0;
+    paths = ft_split(path[6], '=');
+    paths = ft_split(paths[1], ':');
+    while (paths[i])
+    {
+        x = ft_strjoin(paths[i], "/");
+        x = ft_strjoin(x, cmd);
+        if (access(x, F_OK) == 0)
+		{
+			file = ft_strjoin(paths[i], "/");
+			file = ft_strjoin(file, cmd);
+            return (file);
+		}
+        i++;
+    }
+    return(NULL);
+}
