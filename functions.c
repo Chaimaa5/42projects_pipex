@@ -21,33 +21,6 @@ size_t	ft_strlen(const char	*str)
 	return (i);
 }
 
-static char	*ft_strcat(char *dst, const char *src)
-{
-	size_t	i;
-	size_t	len;
-
-	i = 0;
-	len = ft_strlen(dst);
-	while (src[i])
-	{
-		dst[i + len] = src[i];
-		i++;
-	}
-	dst[i + len] = '\0';
-	return (dst);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*result;
-
-	if (!s1 || !s2)
-		return (0);
-	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (result)
-		ft_strcat(ft_strcat(result, s1), s2);
-	return (result);
-}
 
 static int	count_words(char *s, char c)
 {
@@ -170,4 +143,25 @@ void	ft_putstr_fd(char *str, int fd)
 		write(fd, &str[i], 1);
 		i++;
 	}
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*p;
+	int		len2;
+	int		i;
+	int		len1;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	p = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+	if (p == NULL)
+		return (NULL);
+	i = 0;
+	while (i++ < len1)
+		p[i - 1] = s1[i - 1];
+	while (i++ < len1 + len2 + 1)
+		p[i - 2] = s2[i - len1 - 2];
+	p[len1 + len2] = '\0';
+	return (p);
 }
