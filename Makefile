@@ -1,12 +1,13 @@
 NAME = pipex
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-SRCS = functions.c pipex.c
+SRCS = 02_utils.c 01_utils.c pipex.c
 	
 OBJS = $(SRCS:.c=.o)
 
 
-$(NAME) : $(OBJS)
+$(NAME) : $(SRCS)
+		$(CC) $(CFLAGS) $(SRCS) -o ${NAME}
 
 all : $(NAME)
 

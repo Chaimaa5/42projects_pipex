@@ -19,6 +19,8 @@ void    child(int *end, char **argv, char **envp)
 
                 ft_putstr_fd("command not found:", 2);
                 ft_putstr_fd(cmd[0], 2);
+                exit(0);
+
 
     }
 }
@@ -29,6 +31,7 @@ void    parent(int *end, char **argv, char **envp)
     char    **cmd;
     int     fd;
 
+    wait(0);
     cmd = ft_split(argv[3], ' ');
     path = search(envp, cmd[0]);
     fd = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -42,28 +45,30 @@ void    parent(int *end, char **argv, char **envp)
     {
                 ft_putstr_fd("command not found:", 2);
                 ft_putstr_fd(cmd[0], 2);
+                                exit(0);
+
 
 
     }
+  
 }
 
 int main(int argc, char **argv, char **envp)
 {
     int id;
     int end[2];
-
    
     pipe(end);
     id = fork();
-   if(argc == 5)
+    if (argc == 5)
    {
     if (id < 0)
        perror("Fork: ");
     else if (id == 0)
         child(end, argv, envp);
     else 
-    {   id = fork();
-        if (id == 0)
+    {
+        if (id != 0)
             parent(end, argv, envp);
         else
         {
@@ -72,6 +77,6 @@ int main(int argc, char **argv, char **envp)
         }
     }
    }
-    waitpid(id, NULL, 0);
+  
 }
 
