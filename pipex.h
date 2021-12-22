@@ -26,5 +26,8 @@ char	*search(char **path, char *cmd);
 void	ft_putstr_fd(char *str, int fd);
 int find_env(char **envp, char *pwd);
 int	ft_strncmp(char *s1, char *s2, size_t n);
+char	**find_path(char **envp);
+void	free_array(char **array);
+int find_path_env(char **envp, char *pwd);
 
 #endif

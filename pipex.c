@@ -64,10 +64,16 @@ int	main(int argc, char **argv, char **envp)
 	int	id;
 	int	end[2];
 
-	pipe(end);
+	if (pipe(end) == -1)
+		exit(0);
+
 	id = fork();
-	if (argc == 5)
+	if (argc != 5)
 	{
+		ft_putstr_fd("usage: <file1> <cmd1> <cmd2> <file2>", 2);
+		exit(0);
+	}
+	else{
 		if (id < 0)
 			perror("Fork: ");
 		else if (id == 0)
@@ -81,7 +87,6 @@ int	main(int argc, char **argv, char **envp)
 				close(end[1]);
 				close(end[0]);
 			}
-
 		}
 	}
 }
