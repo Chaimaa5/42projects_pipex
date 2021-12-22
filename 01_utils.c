@@ -1,33 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   01_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cel-mhan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/22 00:35:19 by cel-mhan          #+#    #+#             */
+/*   Updated: 2021/12/22 00:35:36 by cel-mhan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-char    *search(char **path, char *cmd)
+int	ft_strncmp(char *s1, char *s2, size_t n)
 {
-    int     i;
-    char    **paths;
-    char    *x;
+	size_t			i;
+	unsigned char	*s11;
+	unsigned char	*s22;
+
+	s11 = (unsigned char *)s1;
+	s22 = (unsigned char *)s2;
+	i = 0;
+	while (i < n)
+	{
+		if (s11[i] && s22[i] && s11[i] == s22[i])
+		{
+			i++;
+			continue ;
+		}
+		return (s11[i] - s22[i]);
+	}
+	return (0);
+}
+
+int find_env(char **envp, char *pwd)
+{
+  int i;
+
+  i = 0;
+  while (envp[i])
+  {
+    if (!ft_strncmp(envp[i], pwd, 4))
+	{
+		printf("%i", i);
+      return (i);
+	}
+    i++;
+  }
+  return (0);
+}
+
+char	*search(char **envp, char *cmd)
+{
+	int		i;
+	int		c;
+	char	**paths;
+	char	*x;
 	char	*file;
 
-    i = 0;
-    paths = ft_split(path[6], '=');
-    paths = ft_split(paths[1], ':');
-    while (paths[i])
-    {
-        x = ft_strjoin(paths[i], "/");
-        x = ft_strjoin(x, cmd);
-        if (access(x, F_OK) == 0)
+	c = find_env(envp, "PATH");
+	i = 0;
+	paths = ft_split(envp[c], '=');
+	paths = ft_split(paths[1], ':');
+	while (paths[i])
+	{
+		x = ft_strjoin(paths[i], "/");
+		x = ft_strjoin(x, cmd);
+		if (access(x, F_OK) == 0)
 		{
 			file = ft_strjoin(paths[i], "/");
 			file = ft_strjoin(file, cmd);
-            return (file);
+			return (file);
 		}
-        i++;
-    }
-    return(NULL);
+		i++;
+	}
+	if (cmd[0] == '/')
+		return ("");
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+	return (NULL);
 }
 
 void	ft_putstr_fd(char *str, int fd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])

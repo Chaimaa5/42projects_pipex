@@ -6,11 +6,12 @@
 /*   By: cel-mhan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 02:51:20 by cel-mhan          #+#    #+#             */
-/*   Updated: 2021/11/19 02:30:18 by cel-mhan         ###   ########.fr       */
+/*   Updated: 2021/12/22 00:36:15 by cel-mhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
 size_t	ft_strlen(const char	*str)
 {
 	size_t	i;
@@ -20,7 +21,6 @@ size_t	ft_strlen(const char	*str)
 		i++;
 	return (i);
 }
-
 
 static int	count_words(char *s, char c)
 {
