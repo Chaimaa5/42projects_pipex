@@ -6,7 +6,7 @@
 /*   By: cel-mhan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 00:34:31 by cel-mhan          #+#    #+#             */
-/*   Updated: 2021/12/22 00:35:13 by cel-mhan         ###   ########.fr       */
+/*   Updated: 2021/12/23 21:53:12 by cel-mhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*search(char **path, char *cmd);
 size_t	ft_strlen(const char	*str);
 char	*search(char **path, char *cmd);
 void	ft_putstr_fd(char *str, int fd);
-int find_env(char **envp, char *pwd);
-int	ft_strncmp(char *s1, char *s2, size_t n);
+int		find_env(char **envp, char *pwd);
+int		ft_strncmp(char *s1, char *s2, size_t n);
 char	**find_path(char **envp);
 void	free_array(char **array);
-int find_path_env(char **envp, char *pwd);
+int		find_path_env(char **envp, char *pwd);
 
 #endif

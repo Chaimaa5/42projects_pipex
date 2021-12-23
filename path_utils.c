@@ -96,8 +96,6 @@ char	*search(char **envp, char *cmd)
 		i++;
 	}
 	free_array(paths);
-	if (cmd[0] == '/')
-		return ("");
 	if (access(cmd, F_OK) == 0)
 		return (cmd);
 	return (NULL);

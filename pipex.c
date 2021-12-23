@@ -6,11 +6,25 @@
 /*   By: cel-mhan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 00:26:31 by cel-mhan          #+#    #+#             */
-/*   Updated: 2021/12/22 00:33:56 by cel-mhan         ###   ########.fr       */
+/*   Updated: 2021/12/23 21:52:54 by cel-mhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	open_file(char *cmd, char *file, int mode)
+{
+	if (mode == 1 && access(file, F_OK) == 0)
+		return (open(file, O_RDONLY, 0));
+	else
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(file, 2);
+		ft_putstr_fd(": No such file or directory", 2);
+		return (-1);
+	}
+}
 
 void	child(int *end, char **argv, char **envp)
 {
@@ -20,7 +34,9 @@ void	child(int *end, char **argv, char **envp)
 
 	cmd = ft_split(argv[2], ' ');
 	path = search(envp, cmd[0]);
-	fd = open(argv[1], O_RDONLY);
+	fd = open_file(cmd[0], argv[1], 1);
+	if (fd == -1)
+		exit(1);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	dup2(end[1], STDOUT_FILENO);
@@ -50,12 +66,11 @@ void	parent(int *end, char **argv, char **envp)
 	close(end[1]);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	system("leaks pipex");
 	if (execve(path, cmd, envp) == -1)
 	{
 		ft_putstr_fd("command not found:", 2);
 		ft_putstr_fd(cmd[0], 2);
-		exit(0);
+		exit(127);
 	}
 }
 
@@ -66,27 +81,19 @@ int	main(int argc, char **argv, char **envp)
 
 	if (pipe(end) == -1)
 		exit(0);
-
 	id = fork();
 	if (argc != 5)
 	{
 		ft_putstr_fd("usage: <file1> <cmd1> <cmd2> <file2>", 2);
 		exit(0);
 	}
-	else{
+	else
+	{
 		if (id < 0)
 			perror("Fork: ");
 		else if (id == 0)
 			child(end, argv, envp);
 		else
-		{
-			if (id != 0)
-				parent(end, argv, envp);
-			else
-			{
-				close(end[1]);
-				close(end[0]);
-			}
-		}
+			parent(end, argv, envp);
 	}
 }
